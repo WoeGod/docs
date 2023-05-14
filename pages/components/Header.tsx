@@ -14,7 +14,7 @@ const LeftWrapper = styled.div`
 `
 const TopTitle = styled.h3`
   color: rgb(0,0,0);
-  font-size: 26px;
+  font-size: 16px;
   margin: 0;
   padding: 0 20px;
 `

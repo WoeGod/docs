@@ -1,4 +1,4 @@
-const products = [
+export const products = [
     {
       title: 'git clone测试',
       name: 'git',
