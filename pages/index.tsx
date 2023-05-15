@@ -1,7 +1,7 @@
 // import Image from 'next/image'
 // import { Inter } from 'next/font/google'
 import Link from "next/link"
-// import Header from "./components/Header"
+import Header from "./components/Header"
 import styled from "styled-components"
 import SearchBox from "./components/SearchBox";
 // import ProductList from "./components/ProductList";
@@ -28,7 +28,7 @@ const Description = styled.div`
 export default function Home() {
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <MainWrapper>
         <Title>Technical documentation</Title>
         <Description>Search for in-depth articles on Qixin developer tools and technologies.</Description>
