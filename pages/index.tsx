@@ -2,37 +2,38 @@
 // import { Inter } from 'next/font/google'
 import Link from "next/link"
 import Header from "./components/Header"
-import { styled } from "styled-components"
+// import { styled } from "styled-components"
 import { SearchBox, ISearchBoxStyles } from '@fluentui/react/lib/SearchBox';
 import ProductList from "./components/ProductList";
+import styles from './index.module.css';
 
 const searchBoxStyles: Partial<ISearchBoxStyles> = { root: { width: 300 } };
 
 // const inter = Inter({ subsets: ['latin'] })
 
-const MainWrapper = styled.main`
-  background: #E5E5E5;
-  padding: 72px 46px;
-`
+// const MainWrapper = styled.main`
+//   background: #E5E5E5;
+//   padding: 72px 46px;
+// `
 
-const Title = styled.h1`
-    font-size: 44px;
-    line-height: 64px;
-    margin: 0;
-    margin-bottom: 40px;
-`
+// const Title = styled.h1`
+//     font-size: 44px;
+//     line-height: 64px;
+//     margin: 0;
+//     margin-bottom: 40px;
+// `
 
-const Description = styled.div`
-  margin-bottom: 30px;
-`
+// const Description = styled.div`
+//   margin-bottom: 30px;
+// `
 
 export default function Home() {
   return (
     <>
       <Header />
-      <MainWrapper>
-        <Title>Technical documentation</Title>
-        <Description>Search for in-depth articles on Qixin developer tools and technologies.</Description>
+      <main className={styles.mainWrapper}>
+        <h1 className={styles.title}>Technical documentation</h1>
+        <div className={styles.description}>Search for in-depth articles on Qixin developer tools and technologies.</div>
         <SearchBox
           styles={searchBoxStyles}
           placeholder="Search"
@@ -45,7 +46,7 @@ export default function Home() {
           onChange={(_, newValue) => console.log('SearchBox onChange fired: ' + newValue)}
           onSearch={newValue => console.log('SearchBox onSearch fired: ' + newValue)}
         />
-      </MainWrapper>
+      </main>
       <ProductList />
     </>
 

@@ -1,0 +1,15 @@
+.mainWrapper {
+  background: #E5E5E5;
+  padding: 72px 46px;
+}
+
+.title {
+  font-size: 44px;
+  line-height: 64px;
+  margin: 0;
+  margin-bottom: 40px;
+}
+
+.description {
+  margin-bottom: 30px;
+}
