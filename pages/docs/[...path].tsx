@@ -46,7 +46,6 @@ export async function getServerSideProps(context: any) {
 
   // check if repo exists
   const dir = `docs/${product.name}/${product.path}`
-  console.warn(dir)
   if (!fs.existsSync(dir)) {
     await git.clone({ fs, http, url: product.url, dir, depth: 1 })
   }

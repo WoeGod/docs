@@ -1,13 +1,31 @@
 // import Image from 'next/image'
 // import { Inter } from 'next/font/google'
+import fs from "fs";
+import YAML from 'yaml';
+
 import Link from "next/link"
 import Header from "./components/Header"
 import styled from "styled-components"
 import SearchBox from "./components/SearchBox";
 import ProductList from "./components/ProductList";
+import products from "@/data/common";
 
 
 // const inter = Inter({ subsets: ['latin'] })
+
+export type IDoc = {
+  base: string;
+  name: string;
+  path: string;
+  type: string;
+}
+
+export interface IProductData {
+  [productName: string]: {
+    training: { name: string}[];
+    docs: IDoc[]
+  }
+}
 
 const MainWrapper = styled.main`
   background: #E5E5E5;
@@ -25,9 +43,9 @@ const Description = styled.div`
   margin-bottom: 30px;
 `
 
-export default function Home() {
+export default function Home(props: { productData: IProductData }) {
   const onSearch = (e) => {
-    console.log(e.target.value, 123123);
+    console.log(e.target.value, 'search value');
   };
   return (
     <>
@@ -37,7 +55,7 @@ export default function Home() {
         <Description>Search for in-depth articles on Qixin developer tools and technologies.</Description>
         <SearchBox style={{ width: 300 }} onChange={onSearch} />
       </MainWrapper>
-      <ProductList />
+      <ProductList productData={props.productData} />
     </>
 
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -156,4 +174,23 @@ export default function Home() {
     //   </div>
     // </main>
   )
+}
+
+
+export async function getServerSideProps() {
+  let productData: IProductData = {};
+  let yamlFile
+  products.forEach(product => {
+    yamlFile = `docs/${product.name}/yaml.yml`
+    if (fs.existsSync(yamlFile) && fs.lstatSync(yamlFile).isFile()) {
+      const data = YAML.parse(fs.readFileSync(yamlFile).toString())
+      productData[product.name] = data;
+    }
+  })
+  
+  return {
+    props: {
+      productData
+    }
+  }
 }
