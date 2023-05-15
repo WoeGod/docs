@@ -24,6 +24,9 @@ const LogoTitle = styled(TopTitle)`
 const StyledLink = styled(Link)`
   color: #000000;
   text-decoration: unset;
+  &: hover {
+    text-decoration: underline;
+  }
 `
 
 
