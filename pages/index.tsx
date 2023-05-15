@@ -26,13 +26,16 @@ const Description = styled.div`
 `
 
 export default function Home() {
+  const onSearch = (e) => {
+    console.log(e.target.value, 123123);
+  };
   return (
     <>
       <Header />
       <MainWrapper>
         <Title>Technical documentation</Title>
         <Description>Search for in-depth articles on Qixin developer tools and technologies.</Description>
-        <SearchBox />
+        <SearchBox style={{ width: 300 }} onChange={onSearch} />
       </MainWrapper>
       <ProductList />
     </>

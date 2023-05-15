@@ -8,6 +8,7 @@ import YAML from 'yaml'
 import TocPanel from "./TocPanel"
 import { Content } from "next/font/google"
 import ContentPanel from "./ContentPanel"
+import Header from "../components/Header"
 
 export interface ContentProps {
   type: string
@@ -22,11 +23,7 @@ export default (props: ContentProps) => {
   }
 
   return <div className="flex flex-col">
-    <div className="h-12 bg-[#f0f0f0] flex">
-      <div className="text-4xl w-64">Learn</div>
-      <div className="text-2xl pr-8">Documentation</div>
-      <div className="text-2xl pr-8">Training</div>
-    </div>
+    <Header />
     
     <div className="flex">
       <div className="flex-none w-64 bg-[#f0f0f0]"><TocPanel toc={props.toc} base={`/docs/${props.product}`} /></div>
