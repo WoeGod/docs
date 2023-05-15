@@ -34,7 +34,7 @@ const Logo = () => {
   return (
     <div className="flex align-center">
       <Image width={30} src={require('../../public/logo.png')} alt="logo" />
-      <LogoTitle>QiXin</LogoTitle>
+      <LogoTitle><StyledLink href={'/'}>QiXin</StyledLink></LogoTitle>
     </div>
   );
 };
