@@ -4,7 +4,7 @@ import Link from "next/link"
 import Header from "./components/Header"
 import styled from "styled-components"
 import SearchBox from "./components/SearchBox";
-// import ProductList from "./components/ProductList";
+import ProductList from "./components/ProductList";
 
 
 // const inter = Inter({ subsets: ['latin'] })
@@ -34,7 +34,7 @@ export default function Home() {
         <Description>Search for in-depth articles on Qixin developer tools and technologies.</Description>
         <SearchBox />
       </MainWrapper>
-      {/* <ProductList /> */}
+      <ProductList />
     </>
 
     // <main className="flex min-h-screen flex-col items-center justify-between p-24">
