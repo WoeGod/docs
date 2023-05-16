@@ -18,6 +18,7 @@
 
 body {
   margin: 0;
+  color: #000000;
 }
 
 .flex {
@@ -26,6 +27,11 @@ body {
 
 .align-center {
   align-items: center;
+}
+
+a {
+  text-decoration: unset;
+  color: inherit;
 }
 
 /* body {
