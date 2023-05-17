@@ -35,7 +35,7 @@ const StyledLink = styled(Link)`
 const Logo = () => {
   return (
     <div className="flex align-center">
-      <Image width={30} src={require('../../public/logo.png')} alt="logo" />
+      <Image width={30} height={30} src="/logo.png" alt="logo" />
       <LogoTitle href="/">QiXin</LogoTitle>
     </div>
   );

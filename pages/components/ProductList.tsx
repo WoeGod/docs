@@ -1,6 +1,6 @@
 import { products } from '../../data/common';
-import { IProductData } from '..';
 import styled from 'styled-components';
+import Link from 'next/link';
 
 const ProductWrapper = styled.div`
   padding: 66px;
@@ -19,14 +19,18 @@ const DocWrapper = styled.div`
   padding: 30px 0;
 `
 
-const DocItem = styled.h4`
+const DocItem = styled(Link)`
   border-left: 2px solid #000000;
   padding: 3px 10px;
   margin-right: 50px;
+  font-weight: bold;
+  &: hover {
+    text-decoration: underline;
+  }
 `
 
 interface IProductList {
-  productData: IProductData;
+  productData: API.IProductData;
 }
 
 export default function ProductList(props: IProductList) {
@@ -40,8 +44,8 @@ export default function ProductList(props: IProductList) {
               <Title>{product.title}</Title>
               <DocWrapper>
                 {
-                  productData[product.name].docs.map(docItem => {
-                    return <DocItem key={docItem.name}>{docItem.name}</DocItem>
+                  productData[product.name]?.docs.map(docItem => {
+                    return <DocItem key={docItem.name} href={`/docs/${product.name}/${docItem.name}`}>{docItem.name}</DocItem>
                   })
                 }
               </DocWrapper>

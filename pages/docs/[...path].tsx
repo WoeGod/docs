@@ -11,13 +11,15 @@ import ContentPanel from "./ContentPanel"
 import Header from "../components/Header"
 
 export interface ContentProps {
-  type: string
-  content: any
-  toc: Toc
-  product: string
+  type: string;
+  content: any;
+  toc: Toc;
+  product: string;
+  docName: string;
 }
 
 export default (props: ContentProps) => {
+  console.log(props, 2222);
   if (!props.content) {
     return <main>not found</main>
   }
@@ -26,8 +28,12 @@ export default (props: ContentProps) => {
     <Header />
     
     <div className="flex">
-      <div className="flex-none w-64 bg-[#f0f0f0]"><TocPanel toc={props.toc} base={`/docs/${props.product}`} /></div>
-      <div className="flex-auto shadow-[0_0_2px_rgba(0,0,0,0.12)] bg-white"><ContentPanel type={props.type} content={props.content} /></div>
+      <div className="flex-none w-64 bg-[#f0f0f0]">
+        <TocPanel toc={props.toc} base={`/docs/${props.product}/${props.docName}`} />
+      </div>
+      <div className="flex-auto shadow-[0_0_2px_rgba(0,0,0,0.12)] bg-white">
+        <ContentPanel type={props.type} content={props.content} />
+      </div>
 
     </div>
   </div>
@@ -35,8 +41,9 @@ export default (props: ContentProps) => {
 
 export async function getServerSideProps(context: any) {
   const paths: string[] = context.params.path
-  console.log(paths)
-  const productName = paths[0]
+  const productName = paths[0];
+  const docName = paths[1];
+
   const product = products.find(p => p.name === productName)
   if (!product) {
     return {
@@ -45,9 +52,17 @@ export async function getServerSideProps(context: any) {
   }
 
   // check if repo exists
-  const dir = `docs/${product.name}/${product.path}`
+  const dir = `docs/${product.name}/${docName ? `${docName}/docs` : product.path}`
+  // console.log('dir ==> ', dir);
   if (!fs.existsSync(dir)) {
     await git.clone({ fs, http, url: product.url, dir, depth: 1 })
+  }
+
+  let docData: string[];
+  const yamlFile = `docs/${product.name}/yaml.yml`
+  if (fs.existsSync(yamlFile) && fs.lstatSync(yamlFile).isFile()) {
+    const data = YAML.parse(fs.readFileSync(yamlFile).toString())
+    docData = data?.docs?.map((i: API.IDoc) => i.name) || [];
   }
 
   // load toc
@@ -58,30 +73,35 @@ export async function getServerSideProps(context: any) {
   }
 
   // load page
-  let name = [dir, ...paths.slice(1)].join("/")
+  // let name = [dir, ...paths.slice(1)].join("/")
+  let name = dir;
+  name = [dir, ...paths.slice(2)].join("/")
+
+  // console.log(name, 'nameeeeeeeeeeeeeeeeeeeeeee')
 
   if (fs.existsSync(name) && fs.lstatSync(name).isDirectory()) {
     name = `${name}/index`
   }
   try {
     const f = name + ".md"
-    console.log(f)
+    // console.log(f, 'fffffffffffffffffffff')
     const content = fs.readFileSync(f).toString()
     const mdxContent = await serialize(content)
-    console.log(toc)
+    // console.log(toc, 'tocccccccccccccccccc')
     return {
       props: {
         type: "md",
         content: mdxContent,
         toc: toc.items,
-        product: product.name
+        product: product.name,
+        docName
       },
     }
   } catch (error) { }
 
   try {
     const f = name + ".mdx"
-    console.log(f)
+    // console.log(f)
     const content = fs.readFileSync(f).toString()
     const mdxContent = await serialize(content)
     return {
@@ -89,36 +109,39 @@ export async function getServerSideProps(context: any) {
         type: "mdx",
         content: mdxContent,
         toc: toc.items,
-        product: product.name
+        product: product.name,
+        docName
       },
     }
   } catch (error) { }
 
   try {
     const f = name + ".openapi.json"
-    console.log(f)
-    console.log('openAPI', toc)
+    // console.log(f)
+    // console.log('openAPI', toc)
     const content = JSON.parse(fs.readFileSync(f).toString())
     return {
       props: {
         type: "openapi.json",
         content,
         toc: toc.items,
-        product: product.name
+        product: product.name,
+        docName
       },
     }
   } catch (error) { }
 
   try {
     const f = name + ".openapi.yml"
-    console.log(f)
+    // console.log(f)
     const content = YAML.parse(fs.readFileSync(f).toString())
     return {
       props: {
         type: "openapi.yml",
         content,
         toc: toc.items,
-        product: product.name
+        product: product.name,
+        docName
       },
     }
   } catch (error) { }
