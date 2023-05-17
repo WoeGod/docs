@@ -4,7 +4,7 @@ export const products = [
       name: 'git',
       describe: 'git clone测试',
       url: 'https://github.com/WoeGod/document-test.git',
-      path: 'project1/docs'
+      path: 'project1'
     },
   ]
   

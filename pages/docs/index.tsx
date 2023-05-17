@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export default ({ products }: any) => {
   return products.map((p: any) =>
-    <Link key={p.name} href={`/docs/${p.name}`}>{p.name}</Link>
+    <Link key={p.name} href={`/docs/${p.name}/${p.path}`}>{p.name}</Link>
   )
 }
 
