@@ -45,7 +45,7 @@ const Menu = () => {
   const menuList = [
     {
       title: 'Document',
-      href: '/docs'
+      href: '/'
     },
     {
       title: 'Train',

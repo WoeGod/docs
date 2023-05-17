@@ -1,3 +1,4 @@
+/* eslint-disable */
 import products, { Toc } from "@/data/common"
 import git from "isomorphic-git"
 import fs from "fs"
@@ -19,19 +20,18 @@ export interface ContentProps {
 }
 
 export default (props: ContentProps) => {
-  console.log(props, 2222);
   if (!props.content) {
     return <main>not found</main>
   }
 
-  return <div className="flex flex-col">
+  return <div className="flex flex-col" style={{ height: '100%' }}>
     <Header />
     
-    <div className="flex">
+    <div className="flex" style={{ height: '100%' }}>
       <div className="flex-none w-64 bg-[#f0f0f0]">
         <TocPanel toc={props.toc} base={`/docs/${props.product}/${props.docName}`} />
       </div>
-      <div className="flex-auto shadow-[0_0_2px_rgba(0,0,0,0.12)] bg-white">
+      <div className="flex-auto shadow-[0_0_2px_rgba(0,0,0,0.12)] bg-white p-5">
         <ContentPanel type={props.type} content={props.content} />
       </div>
 
