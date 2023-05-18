@@ -52,14 +52,14 @@ export async function getServerSideProps(context: any) {
   }
 
   // check if repo exists
-  const dir = `docs/${product.name}/${docName ? `${docName}/docs` : product.path}`
+  const dir = `docs/${product.name}/${docName}/docs`
   // console.log('dir ==> ', dir);
   if (!fs.existsSync(dir)) {
     await git.clone({ fs, http, url: product.url, dir, depth: 1 })
   }
 
   let docData: string[];
-  const yamlFile = `docs/${product.name}/yaml.yml`
+  const yamlFile = `docs/${product.name}/yaml`
   if (fs.existsSync(yamlFile) && fs.lstatSync(yamlFile).isFile()) {
     const data = YAML.parse(fs.readFileSync(yamlFile).toString())
     docData = data?.docs?.map((i: API.IDoc) => i.name) || [];
