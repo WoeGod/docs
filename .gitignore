@@ -14,6 +14,7 @@
 
 # git repository
 /public/gitRepository/*
+/docs
 
 # production
 /build

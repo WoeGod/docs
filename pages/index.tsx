@@ -68,12 +68,15 @@ export async function getServerSideProps() {
 
   setData();
 
-  // 一次性将git项目都请求回来
-  await Promise.all(fetchList);
-
   if (fetchList.length) {
-    // fetchList的length > 0的话，说明需要去拉取项目，则再重新调用一遍setData，以便将内容写入productData
-    setData();
+    // 一次性将git项目都请求回来
+    await Promise.all(fetchList).then(res => {
+      console.log(res, '成功？？？？？？？？？？？')
+      // 重新调用一遍setData，以便将内容写入productData
+      setData();
+    }).catch(err => {
+      console.log(err, '失败？？？？？？？？？？')
+    });
   }
 
   return {
