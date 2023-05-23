@@ -28,7 +28,7 @@ const Description = styled.div`
 `
 
 export default function Home(props: { productData: API.IProductData }) {
-  const onSearch = (e) => {
+  const onSearch = (e: any) => {
     console.log(e.target.value, 'search value');
   };
   return (
@@ -71,11 +71,11 @@ export async function getServerSideProps() {
   if (fetchList.length) {
     // 一次性将git项目都请求回来
     await Promise.all(fetchList).then(res => {
-      console.log(res, '成功？？？？？？？？？？？')
+      console.log(res, '项目拉取成功！！！')
       // 重新调用一遍setData，以便将内容写入productData
       setData();
     }).catch(err => {
-      console.log(err, '失败？？？？？？？？？？')
+      console.log(err, '项目拉取失败，请刷新页面重试！')
     });
   }
 

@@ -6,7 +6,7 @@ export interface ContentProps {
     content: any
   }
 
-export default (props: ContentProps) => {
+export default function ContentPanel (props: ContentProps) {
     if (!props.content) {
       return <main>not found</main>
     }
