@@ -17,6 +17,7 @@ export interface ContentProps {
   toc: Toc;
   product: string;
   docName: string;
+  routePaths: string[];
 }
 
 export default (props: ContentProps) => {
@@ -24,12 +25,14 @@ export default (props: ContentProps) => {
     return <main>not found</main>
   }
 
+  const targetDoc = props.routePaths[props.routePaths.length - 1];
+
   return <div className="flex flex-col" style={{ height: '100%' }}>
     <Header />
     
     <div className="flex" style={{ height: '100%' }}>
       <div className="flex-none w-64 bg-[#f0f0f0]">
-        <TocPanel toc={props.toc} base={`/docs/${props.product}/${props.docName}`} />
+        <TocPanel toc={props.toc} base={`/docs/${props.product}/${props.docName}`} targetDoc={targetDoc} />
       </div>
       <div className="flex-auto shadow-[0_0_2px_rgba(0,0,0,0.12)] bg-white p-5">
         <ContentPanel type={props.type} content={props.content} />
@@ -82,6 +85,14 @@ export async function getServerSideProps(context: any) {
   if (fs.existsSync(name) && fs.lstatSync(name).isDirectory()) {
     name = `${name}/index`
   }
+
+  const defaultProps = {
+    routePaths: paths,
+    toc: toc.items,
+    product: product.name,
+    docName
+  }
+
   try {
     const f = name + ".md"
     // console.log(f, 'fffffffffffffffffffff')
@@ -89,13 +100,10 @@ export async function getServerSideProps(context: any) {
     const mdxContent = await serialize(content)
     // console.log(toc, 'tocccccccccccccccccc')
     return {
-      props: {
+      props: Object.assign(defaultProps, {
         type: "md",
         content: mdxContent,
-        toc: toc.items,
-        product: product.name,
-        docName
-      },
+      }),
     }
   } catch (error) { }
 
@@ -105,13 +113,10 @@ export async function getServerSideProps(context: any) {
     const content = fs.readFileSync(f).toString()
     const mdxContent = await serialize(content)
     return {
-      props: {
+      props: Object.assign(defaultProps, {
         type: "mdx",
-        content: mdxContent,
-        toc: toc.items,
-        product: product.name,
-        docName
-      },
+        content: mdxContent
+      }),
     }
   } catch (error) { }
 
@@ -121,13 +126,10 @@ export async function getServerSideProps(context: any) {
     // console.log('openAPI', toc)
     const content = JSON.parse(fs.readFileSync(f).toString())
     return {
-      props: {
+      props: Object.assign(defaultProps, {
         type: "openapi.json",
         content,
-        toc: toc.items,
-        product: product.name,
-        docName
-      },
+      }),
     }
   } catch (error) { }
 
@@ -136,13 +138,10 @@ export async function getServerSideProps(context: any) {
     // console.log(f)
     const content = YAML.parse(fs.readFileSync(f).toString())
     return {
-      props: {
+      props: Object.assign(defaultProps, {
         type: "openapi.yml",
         content,
-        toc: toc.items,
-        product: product.name,
-        docName
-      },
+      }),
     }
   } catch (error) { }
 
