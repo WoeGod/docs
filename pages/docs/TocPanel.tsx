@@ -21,7 +21,7 @@ function Entry(base: string, entry: TocEntry) {
 
 function TocTree({ toc, base }: TocProps) {
   return <Tree>
-    {toc.map(i => {
+    {toc?.map(i => {
       return <TreeItem key={i.name}>
         <TreeItemLayout>{Entry(base, i)}</TreeItemLayout>
         {i.items && <TocTree toc={i.items} base={base} />}

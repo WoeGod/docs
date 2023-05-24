@@ -34,7 +34,7 @@ interface IProductList {
 }
 
 export default function ProductList(props: IProductList) {
-  const { productData } = props;
+  const { productData = {} } = props;
   return (
     <>
       {
@@ -44,7 +44,7 @@ export default function ProductList(props: IProductList) {
               <Title>{product.title}</Title>
               <DocWrapper>
                 {
-                  productData[product.name]?.docs.map(docItem => {
+                  productData[product.name]?.docs?.map(docItem => {
                     return <DocItem key={docItem.name} href={`/docs/${product.name}/${docItem.name}`}>{docItem.name}</DocItem>
                   })
                 }
