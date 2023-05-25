@@ -4,27 +4,27 @@ items:
   items: 
     - name: 第一章
       type: markdown
-      href: first.md
+      href: introFirst.md
     - name: 第二章
       type: markdown
-      href: second.md
+      href: introSecond.md
       items: 
         - name: 第二章 第一节
           type: markdown
-          href: first.md
+          href: introSecond1.md
         - name: 第二章 第二节
           type: markdown
-          href: second.md
+          href: introSecond2.md
 - name: Get Started
   type: markdown
   href: "get-started.md"
   items: 
     - name: 第一章
       type: markdown
-      href: first.md
+      href: getStartedFirst.md
     - name: 第二章
       type: markdown
-      href: second.md
+      href: getStartedSecond.md
 - name: Installation
   type: markdown
   href: "install.md"

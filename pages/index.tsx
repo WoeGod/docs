@@ -75,7 +75,8 @@ export async function getServerSideProps() {
       // 重新调用一遍setData，以便将内容写入productData
       setData();
     }).catch(err => {
-      console.log(err, '项目拉取失败，请刷新页面重试！')
+      console.log(err, '项目拉取失败，请刷新页面重试！');
+      console.log(new Date());
     });
   }
 
