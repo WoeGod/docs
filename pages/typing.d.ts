@@ -13,4 +13,12 @@ declare namespace API {
     }
   }
 
+  export interface DocItem {
+    name: string;
+    type: string;
+    href: string;
+    items?: DocItem[] | null;
+    key?: string | number;
+  }
+
 }

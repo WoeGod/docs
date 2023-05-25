@@ -28,6 +28,23 @@ const StyledTreeItem = styled(TreeItem)`{
     }
   }
 `
+const addKeyToTree = (items: API.DocItem[] = [], defaultIndex: number | string | null = null): API.DocItem[] => {
+  return items.map((item: API.DocItem, index: number): API.DocItem => {
+    const key = defaultIndex || defaultIndex === 0 ? `${defaultIndex}-${index}` : index
+    return {
+      ...item,
+      key,
+      items: item.items ? addKeyToTree(item.items, key) : null,
+    }
+  })
+};
+
+const findTargetDoc = (items, targetDoc) => {
+  // const arr = [];
+  // const newItems = items.map()
+  // arr.push(targetDoc);
+  console.log(addKeyToTree(items), 1213122);
+};
 
 function Entry(base: string, entry: TocEntry) {
   if (entry.href) {
@@ -55,5 +72,6 @@ function TocTree({ toc, base, targetDoc }: TocProps) {
 }
 
 export default function TocPanel({ toc, base, targetDoc }: TocProps) {
+  console.log('toc ==> ', findTargetDoc(toc, targetDoc));
   return <TocTree toc={toc} base={base} targetDoc={targetDoc} />
 }
