@@ -1,3 +1,4 @@
+// import { useEffect, useMemo, useState } from 'react';
 import { Toc, TocEntry } from "@/data/common"
 
 import {
@@ -15,18 +16,20 @@ interface TocProps {
 }
 
 const StyledTreeItem = styled(TreeItem)`{
-  >div {
-    background: ${(props: { actived: boolean }) => props.actived ? '#0078d4' : 'inherit'};
-    &: hover {
-      background: ${(props: { actived: boolean }) => props.actived ? '#0078d4' : '#f5f5f5'};
-    }
-    a {
-      color: ${(props: { actived: boolean }) => props.actived ? '#fff' : 'inherit'};
+  &.selected {
+    >div:nth-child(1) {
+      background: #0078d4;
+      &: hover {
+        background: #0078d4;
+      }
+      a {
+        color: #fff;
+      }
     }
   }
 `
 
-function Entry(base: string, entry: TocEntry, isLeaf: boolean) {
+function Entry(base: string, entry: TocEntry) {
   if (entry.href) {
     return <Link href={`${base}/${entry.href.split(".")[0]}`}>{entry.name}</Link>
   }
@@ -37,14 +40,14 @@ function TocTree({ toc, base, targetDoc }: TocProps) {
   return <Tree defaultOpenItems={[targetDoc]} aria-label="Tree">
     {toc?.map(i => {
       const isLeaf = !i.items?.length;
+      const curPath = i.href?.split(".")[0];
       return <StyledTreeItem
         key={i.name}
-        actived={i.href?.split(".")[0] === targetDoc}
-        className="test"
-        value={i.href?.split(".")[0]} // TODO
-        // itemType={isLeaf ? 'leaf' : 'branch'}
+        className={curPath === targetDoc ? 'selected' : ''}
+        value={curPath} // TODO
+        itemType={isLeaf ? 'leaf' : 'branch'}
       >
-        <TreeItemLayout>{Entry(base, i, isLeaf)}</TreeItemLayout>
+        <TreeItemLayout>{Entry(base, i)}</TreeItemLayout>
         {i.items && <TocTree toc={i.items} base={base} targetDoc={targetDoc} />}
       </StyledTreeItem>
     })}
