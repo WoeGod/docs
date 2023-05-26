@@ -18,7 +18,7 @@ declare namespace API {
     type: string;
     href: string;
     items?: DocItem[] | null;
-    key?: string | number;
+    openItems?: string[];
   }
 
 }

@@ -10,9 +10,10 @@ import Link from "next/link";
 import styled from "styled-components";
 
 interface TocProps {
-  toc: Toc;
+  toc: API.DocItem[];
   base: string;
   targetDoc: string;
+  openItems?: string[];
 }
 
 const StyledTreeItem = styled(TreeItem)`{
@@ -28,33 +29,46 @@ const StyledTreeItem = styled(TreeItem)`{
     }
   }
 `
-const addKeyToTree = (items: API.DocItem[] = [], defaultIndex: number | string | null = null): API.DocItem[] => {
-  return items.map((item: API.DocItem, index: number): API.DocItem => {
-    const key = defaultIndex || defaultIndex === 0 ? `${defaultIndex}-${index}` : index
+const addOpenItemsToItems = (items: API.DocItem[], defaultOpenItems: string[] = []): API.DocItem[] => {
+  return items.map((item) => {
+    const key = item.href.split('.')[0];
+    const openItems: string[] = [...defaultOpenItems, key];
     return {
       ...item,
-      key,
-      items: item.items ? addKeyToTree(item.items, key) : null,
+      openItems,
+      items: item.items && addOpenItemsToItems(item.items, openItems),
     }
   })
 };
 
-const findTargetDoc = (items, targetDoc) => {
-  // const arr = [];
-  // const newItems = items.map()
-  // arr.push(targetDoc);
-  console.log(addKeyToTree(items), 1213122);
+const Array2Map = (items: API.DocItem[], defaultMap: { [key: string]: string[] } = {}) => {
+  const map = defaultMap;
+  items.forEach(item => {
+    const key = item.href.split('.')[0];
+    map[key] = item.openItems || [];
+    if (item.items) {
+      Array2Map(item.items, map)
+    }
+  })
+  return map;
 };
 
-function Entry(base: string, entry: TocEntry) {
+const getOpenItems = (items: API.DocItem[], targetDoc: string) => {
+  const newItems = addOpenItemsToItems(items, []);
+  const openItemsMap = Array2Map(newItems);
+  const openItems = openItemsMap[targetDoc];
+  return openItems;
+};
+
+function Entry(base: string, entry: API.DocItem) {
   if (entry.href) {
     return <Link href={`${base}/${entry.href.split(".")[0]}`}>{entry.name}</Link>
   }
   return <span>{entry.name}</span>
 }
 
-function TocTree({ toc, base, targetDoc }: TocProps) {
-  return <Tree defaultOpenItems={[targetDoc]} aria-label="Tree">
+function TocTree({ toc, base, targetDoc, openItems }: TocProps) {
+  return <Tree defaultOpenItems={openItems} aria-label="Tree">
     {toc?.map(i => {
       const isLeaf = !i.items?.length;
       const curPath = i.href?.split(".")[0];
@@ -65,13 +79,13 @@ function TocTree({ toc, base, targetDoc }: TocProps) {
         itemType={isLeaf ? 'leaf' : 'branch'}
       >
         <TreeItemLayout>{Entry(base, i)}</TreeItemLayout>
-        {i.items && <TocTree toc={i.items} base={base} targetDoc={targetDoc} />}
+        {i.items && <TocTree toc={i.items} base={base} targetDoc={targetDoc} openItems={openItems} />}
       </StyledTreeItem>
     })}
   </Tree>
 }
 
 export default function TocPanel({ toc, base, targetDoc }: TocProps) {
-  console.log('toc ==> ', findTargetDoc(toc, targetDoc));
-  return <TocTree toc={toc} base={base} targetDoc={targetDoc} />
+  const openItems = getOpenItems(toc, targetDoc);
+  return <TocTree toc={toc} base={base} targetDoc={targetDoc} openItems={openItems} />
 }

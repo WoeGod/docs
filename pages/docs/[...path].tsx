@@ -14,7 +14,7 @@ import Header from "../components/Header"
 export interface ContentProps {
   type: string;
   content: any;
-  toc: Toc;
+  toc: API.DocItem[];
   product: string;
   docName: string;
   routePaths: string[];
