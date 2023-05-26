@@ -30,7 +30,7 @@ const StyledTreeItem = styled(TreeItem)`{
   }
 `
 const addOpenItemsToItems = (items: API.DocItem[], defaultOpenItems: string[] = []): API.DocItem[] => {
-  return items.map((item) => {
+  return items?.map((item) => {
     const key = item.href.split('.')[0];
     const openItems: string[] = [...defaultOpenItems, key];
     return {
@@ -43,7 +43,7 @@ const addOpenItemsToItems = (items: API.DocItem[], defaultOpenItems: string[] = 
 
 const Array2Map = (items: API.DocItem[], defaultMap: { [key: string]: string[] } = {}) => {
   const map = defaultMap;
-  items.forEach(item => {
+  items?.forEach(item => {
     const key = item.href.split('.')[0];
     map[key] = item.openItems || [];
     if (item.items) {
