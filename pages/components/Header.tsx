@@ -8,6 +8,12 @@ const HeaderWrapper = styled.div`
   padding: 5px 10px;
   display: flex;
   justify-content: space-between;
+  height: 42px;
+  box-sizing: border-box;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
 `
 const LeftWrapper = styled.div`
   display: flex;
@@ -69,6 +75,10 @@ const Menu = () => {
   )
 };
 
+
+/**
+ * 头部组件，固定定位，使用时外层容器要加上 position: 'relative', paddingTop: 42 
+ */
 export default function Header() {
   return (
     <HeaderWrapper>

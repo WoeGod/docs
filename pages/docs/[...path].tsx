@@ -24,11 +24,11 @@ export interface ContentProps {
 export default (props: ContentProps) => {
   const targetDoc = props.paths?.slice(1)?.join('/');
 
-  return <div className="flex flex-col" style={{ height: '100%' }}>
+  return <div className="flex flex-col" style={{ height: '100%', position: 'relative', paddingTop: 42 }}>
     <Header />
     
-    <div className="flex" style={{ height: '100%' }}>
-      <div className="flex-none w-64 bg-[#f0f0f0]">
+    <div className="flex pl-64" style={{ height: '100%', position: 'relative' }}>
+      <div className="flex-none w-64 bg-[#f0f0f0]" style={{ overflowY: 'auto', position: 'fixed', left: 0,  height: '100%' }}>
         <TocPanel
           toc={props.toc}
           base={`/docs/${props.product}`}

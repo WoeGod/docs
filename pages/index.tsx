@@ -32,7 +32,7 @@ export default function Home(props: { productData: API.IProductData }) {
     console.log(e.target.value, 'search value');
   };
   return (
-    <>
+    <div style={{ position: 'relative', paddingTop: 42 }}>
       <Header />
       <MainWrapper>
         <Title>Technical documentation</Title>
@@ -40,7 +40,7 @@ export default function Home(props: { productData: API.IProductData }) {
         <SearchBox style={{ width: 300 }} onChange={onSearch} />
       </MainWrapper>
       <ProductList productData={props.productData} />
-    </>
+    </div>
   )
 }
 
