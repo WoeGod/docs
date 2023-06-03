@@ -10,7 +10,7 @@ import TocPanel from "./TocPanel"
 import { Content } from "next/font/google"
 import ContentPanel from "./ContentPanel"
 import Header from "../components/Header"
-import { arrayAddKey } from "@/utils"
+import { arrayAddKeyAndOpenItems } from "@/utils"
 
 export interface ContentProps {
   type: string;
@@ -22,7 +22,6 @@ export interface ContentProps {
 }
 
 export default (props: ContentProps) => {
-  // console.log(props.paths, 'paths ===========');
   const targetDoc = props.paths?.slice(1)?.join('/');
 
   return <div className="flex flex-col" style={{ height: '100%' }}>
@@ -30,7 +29,11 @@ export default (props: ContentProps) => {
     
     <div className="flex" style={{ height: '100%' }}>
       <div className="flex-none w-64 bg-[#f0f0f0]">
-        <TocPanel toc={props.toc} base={`/docs/${props.product}`} targetDoc={targetDoc} />
+        <TocPanel
+          toc={props.toc}
+          base={`/docs/${props.product}`}
+          targetDoc={targetDoc}
+        />
       </div>
       <div className="flex-auto shadow-[0_0_2px_rgba(0,0,0,0.12)] bg-white p-5">
         {
@@ -83,7 +86,7 @@ export async function getServerSideProps(context: any) {
 
   const defaultProps = {
     paths,
-    toc: arrayAddKey<API.DocItem[]>(toc.items),
+    toc: arrayAddKeyAndOpenItems<API.DocItem[]>(toc.items),
     product: product.name,
   }
 

@@ -7,6 +7,7 @@ import {
   TreeItemLayout,
 } from "@fluentui/react-components/unstable";
 import Link from "next/link";
+import { useMemo } from "react";
 import styled from "styled-components";
 
 interface TocProps {
@@ -29,34 +30,6 @@ const StyledTreeItem = styled(TreeItem)`{
     }
   }
 `
-const addOpenItemsToItems = (items: API.DocItem[], defaultOpenItems: string[] = []): API.DocItem[] => {
-  return items?.map((item) => {
-    const openItems: string[] = [...defaultOpenItems, item.key];
-    return {
-      ...item,
-      openItems,
-      items: item.items && addOpenItemsToItems(item.items, openItems),
-    }
-  })
-};
-
-const Array2Map = (items: API.DocItem[], defaultMap: { [key: string]: string[] } = {}) => {
-  const map = defaultMap;
-  items?.forEach(item => {
-    map[item.key] = item.openItems || [];
-    if (item.items) {
-      Array2Map(item.items, map)
-    }
-  })
-  return map;
-};
-
-const getOpenItems = (items: API.DocItem[], targetDoc: string) => {
-  const newItems = addOpenItemsToItems(items, []);
-  const openItemsMap = Array2Map(newItems);
-  const openItems = openItemsMap[targetDoc];
-  return openItems;
-};
 
 function Entry(base: string, entry: API.DocItem) {
   if (entry.href) {
@@ -72,7 +45,7 @@ function TocTree({ toc, base, targetDoc, openItems }: TocProps) {
       return <StyledTreeItem
         key={i.name}
         className={i.href === targetDoc ? 'selected' : ''}
-        value={i.href} // TODO
+        value={i.key}
         itemType={isLeaf ? 'leaf' : 'branch'}
       >
         <TreeItemLayout>{Entry(base, i)}</TreeItemLayout>
@@ -83,6 +56,17 @@ function TocTree({ toc, base, targetDoc, openItems }: TocProps) {
 }
 
 export default function TocPanel({ toc, base, targetDoc }: TocProps) {
-  const openItems = getOpenItems(toc, targetDoc);
+  const openItems = useMemo(() => {
+    const map: {[href: string]: string[]} = {};
+    const getOpenItems = (arr: API.DocItem[]) => {
+      arr.forEach(item => {
+        if (!item.openItems) return;
+        map[item.href] = item.openItems;
+        if (item.items) getOpenItems(item.items);
+      })
+    };
+    getOpenItems(toc);
+    return map[targetDoc];
+  }, [targetDoc, toc]);
   return <TocTree toc={toc} base={base} targetDoc={targetDoc} openItems={openItems} />
 }

@@ -1,12 +1,14 @@
-export function arrayAddKey<T> (data: T, initIndex?: string, childrenKey = 'items'): any {
+export function arrayAddKeyAndOpenItems<T> (data: T, initIndex?: string, openItems: string[] = [], childrenKey = 'items'): any {
   if (!data || !Array.isArray(data)) return data;
   
   return data.map((item, index) => {
     const curKey = initIndex ? `${initIndex}-${index}`: `${index}`;
+    const curOpenItems = [...openItems, curKey]
     return {
       ...item,
       key: curKey,
-      [childrenKey]: item[childrenKey] ? arrayAddKey(item[childrenKey], curKey) : null
+      openItems: curOpenItems,
+      [childrenKey]: item[childrenKey] ? arrayAddKeyAndOpenItems(item[childrenKey], curKey, curOpenItems) : null
     }
   })
 };
