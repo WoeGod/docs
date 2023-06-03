@@ -69,11 +69,10 @@ function TocTree({ toc, base, targetDoc, openItems }: TocProps) {
   return <Tree defaultOpenItems={openItems} aria-label="Tree">
     {toc?.map(i => {
       const isLeaf = !i.items?.length;
-      const curPath = i.href?.split(".")[0];
       return <StyledTreeItem
         key={i.name}
-        className={curPath === targetDoc ? 'selected' : ''}
-        value={curPath} // TODO
+        className={i.href === targetDoc ? 'selected' : ''}
+        value={i.href} // TODO
         itemType={isLeaf ? 'leaf' : 'branch'}
       >
         <TreeItemLayout>{Entry(base, i)}</TreeItemLayout>

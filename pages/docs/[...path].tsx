@@ -18,12 +18,12 @@ export interface ContentProps {
   toc: API.DocItem[];
   product: string;
   docName: string;
-  routePaths: string[];
+  paths: string[];
 }
 
 export default (props: ContentProps) => {
-  // console.log(props.routePaths, 'routePaths ===========');
-  const targetDoc = props.routePaths?.join('/');
+  console.log(props.paths, 'paths ===========');
+  const targetDoc = props.paths?.slice(1)?.join('/');
 
   return <div className="flex flex-col" style={{ height: '100%' }}>
     <Header />
@@ -82,7 +82,7 @@ export async function getServerSideProps(context: any) {
   }
 
   const defaultProps = {
-    routePaths: paths,
+    paths,
     toc: arrayAddKey<API.DocItem[]>(toc.items),
     product: product.name,
   }
