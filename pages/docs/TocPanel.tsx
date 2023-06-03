@@ -31,8 +31,7 @@ const StyledTreeItem = styled(TreeItem)`{
 `
 const addOpenItemsToItems = (items: API.DocItem[], defaultOpenItems: string[] = []): API.DocItem[] => {
   return items?.map((item) => {
-    const key = item.href.split('.')[0];
-    const openItems: string[] = [...defaultOpenItems, key];
+    const openItems: string[] = [...defaultOpenItems, item.key];
     return {
       ...item,
       openItems,
@@ -44,8 +43,7 @@ const addOpenItemsToItems = (items: API.DocItem[], defaultOpenItems: string[] = 
 const Array2Map = (items: API.DocItem[], defaultMap: { [key: string]: string[] } = {}) => {
   const map = defaultMap;
   items?.forEach(item => {
-    const key = item.href.split('.')[0];
-    map[key] = item.openItems || [];
+    map[item.key] = item.openItems || [];
     if (item.items) {
       Array2Map(item.items, map)
     }
@@ -62,7 +60,7 @@ const getOpenItems = (items: API.DocItem[], targetDoc: string) => {
 
 function Entry(base: string, entry: API.DocItem) {
   if (entry.href) {
-    return <Link href={`${base}/${entry.href.split(".")[0]}`}>{entry.name}</Link>
+    return <Link href={`${base}/${entry.href}`}>{entry.name}</Link>
   }
   return <span>{entry.name}</span>
 }

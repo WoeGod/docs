@@ -4,6 +4,10 @@ import Link from 'next/link';
 
 const ProductWrapper = styled.div`
   padding: 66px;
+  padding-bottom: 0;
+  &:last-child {
+    padding-bottom: 66px;
+  }
 `
 
 const Title = styled.h1`
@@ -45,7 +49,7 @@ export default function ProductList(props: IProductList) {
               <DocWrapper>
                 {
                   productData[product.name]?.docs?.map(docItem => {
-                    return <DocItem key={docItem.name} href={`/docs/${product.name}/${docItem.name}`}>{docItem.name}</DocItem>
+                    return <DocItem key={docItem.name} href={`/docs/${product.name}/${docItem.name}`}>{docItem.title}</DocItem>
                   })
                 }
               </DocWrapper>

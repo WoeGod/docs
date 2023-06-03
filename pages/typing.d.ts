@@ -1,5 +1,6 @@
 declare namespace API {
   export type IDoc = {
+    title: string;
     base: string;
     name: string;
     path: string;
@@ -19,6 +20,7 @@ declare namespace API {
     href: string;
     items?: DocItem[] | null;
     openItems?: string[];
+    key: string;
   }
 
 }
