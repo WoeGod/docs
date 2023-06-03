@@ -31,9 +31,14 @@ const StyledTreeItem = styled(TreeItem)`{
   }
 `
 
+const StyleLink = styled(Link)`
+  display: inline-block;
+  width: 100%;
+`
+
 function Entry(base: string, entry: API.DocItem) {
   if (entry.href) {
-    return <Link href={`${base}/${entry.href}`}>{entry.name}</Link>
+    return <StyleLink href={`${base}/${entry.href}`}>{entry.name}</StyleLink>
   }
   return <span>{entry.name}</span>
 }
