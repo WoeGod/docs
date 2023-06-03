@@ -22,7 +22,7 @@ export interface ContentProps {
 }
 
 export default (props: ContentProps) => {
-  console.log(props.paths, 'paths ===========');
+  // console.log(props.paths, 'paths ===========');
   const targetDoc = props.paths?.slice(1)?.join('/');
 
   return <div className="flex flex-col" style={{ height: '100%' }}>
