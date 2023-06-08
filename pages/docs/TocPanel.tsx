@@ -64,7 +64,7 @@ export default function TocPanel({ toc, base, targetDoc }: TocProps) {
   const openItems = useMemo(() => {
     const map: {[href: string]: string[]} = {};
     const getOpenItems = (arr: API.DocItem[]) => {
-      arr.forEach(item => {
+      arr?.forEach(item => {
         if (!item.openItems) return;
         map[item.href] = item.openItems;
         if (item.items) getOpenItems(item.items);
